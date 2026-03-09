@@ -1,0 +1,141 @@
+<!-- form2.html - Updated with database backend (Visual structure unchanged) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Data</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button.delete-btn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>All Submitted Information</h1>
+
+    <table id="peopleTable">
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Nationality</th>
+            <th>Gender</th>
+            <th>Birthdate</th>
+            <th>Hobbies</th>
+            <th>Comments</th>
+            <th>Action</th>
+        </tr>
+    </table>
+
+    <script>
+
+        let table = document.getElementById("peopleTable");
+        let people = [];
+
+        // Load data from database on page load
+        async function loadData() {
+            try {
+                let response = await fetch('api.php');
+                people = await response.json();
+                displayTable();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert("Failed to load data from database");
+            }
+        }
+
+        function displayTable() {
+
+            table.innerHTML = `
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Nationality</th>
+      <th>Gender</th>
+      <th>Birthdate</th>
+      <th>Hobbies</th>
+      <th>Comments</th>
+      <th>Action</th>
+    </tr>
+  `;
+
+            people.forEach((person, index) => {
+                let row = table.insertRow();
+                row.insertCell(0).innerText = person.name;
+                row.insertCell(1).innerText = person.age;
+                row.insertCell(2).innerText = person.nationality;
+                row.insertCell(3).innerText = person.gender;
+                row.insertCell(4).innerText = person.date;
+                row.insertCell(5).innerText = person.hobbies;
+                row.insertCell(6).innerText = person.comment;
+
+
+                let actionCell = row.insertCell(7);
+                let btn = document.createElement("button");
+                btn.innerText = "Delete";
+                btn.className = "delete-btn";
+                btn.onclick = function () {
+                    deletePerson(index, person.id);
+                };
+                actionCell.appendChild(btn);
+            });
+        }
+
+
+        async function deletePerson(index, id) {
+            if (confirm("Are you sure you want to delete this entry?")) {
+                try {
+                    let response = await fetch('api.php', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({id: id})
+                    });
+
+                    let result = await response.json();
+
+                    if (result.success) {
+                        people.splice(index, 1);
+                        displayTable();
+                    } else {
+                        alert("Error deleting record: " + (result.error || "Unknown error"));
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert("Failed to delete record");
+                }
+            }
+        }
+
+        // Load data when page loads
+        loadData();
+
+    </script>
+
+</body>
+
+</html>

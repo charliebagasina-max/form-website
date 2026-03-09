@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: rgb(0, 13, 255);
+}
+
+.form-header {
+    font-size: 15px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    padding: 10px;
+    margin: 0;
+    background: linear-gradient(135deg, blue 0%, #764ba2 100%);
+    color: white;
+    position: fixed;
+    max-width: 100%;
+    width: 220vh;
+    z-index: 100;
+
+}
+
+.form-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 90vh;
+}
+
+.form-box {
+    background: white;
+    margin: 80px;
+    border: 1px wheat solid;
+    border-radius: 20px;
+    height: 1000vh;
+}
+
+.info-section {
+    width: 65vh;
+    height: 70vh;
+    display: block;
+    margin: 10px;
+}
+
+h2 {
+    color: #764ba2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 13px;
+}
+
+.box {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.boxes {
+    border-radius: 5px;
+    padding: 10px;
+    margin: 7px;
+    width: 400px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    border: transparent;
+}
+
+.boxes:hover {
+    transition: .3s ease;
+    cursor: pointer;
+    transform: translateY(-2px);
+    border: #53129598 1px solid;
+}
+
+.container-radio {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: 25px;
+}
+
+
+.birthdate {
+    margin-left: 25px;
+    padding: 0;
+
+}
+
+.birth-date {
+    border: transparent 3px solid;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+
+}
+
+.birth-date:hover {
+    transition: .25s ease;
+    cursor: pointer;
+    transform: translateY(-2px);
+    border: #53129598 1px solid;
+}
+
+.container-checkbox {
+    display: block;
+    margin: 20px;
+}
+
+.container-checkbox,
+label {
+    display: flex;
+    gap: 10px;
+    justify-content: space-evenly;
+}
+
+textarea {
+    border: rgb(255, 255, 255) 1px solid;
+    padding: 10px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    margin: 20px;
+    width: 400px;
+    height: 120px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+button {
+    border: #575757 1px solid;
+    border-radius: 7px;
+    height: 30px;
+    width: 110px;
+    background: white;
+    margin: 10px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+}
+button:hover {
+    color: white;
+    background: #764ba2;
+    transition: .25s ease;
+}

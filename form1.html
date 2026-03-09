@@ -1,0 +1,149 @@
+<!-- form1.html - Updated with database backend (Visual structure unchanged) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=width-device, initial-scale=1.0">
+    <title>Personal Information</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+
+<body>
+
+    <div class="form-header">
+        <h1>Personal Information Form</h1>
+    </div>
+
+    <div class="form-container">
+
+        <div class="form-box">
+
+            <h2>Personal Information</h2>
+
+            <div class="box">
+                <input type="text" placeholder="Full Name" class="boxes" id="name">
+                <input type="text" placeholder="Age" class="boxes" id="age">
+                <input type="text" placeholder="Nationality" class="boxes" id="nationality">
+            </div>
+
+            <h2>Gender</h2>
+            <div class="container-radio">
+                <label>
+                    <input type="checkbox" class="radio-input" name="gender" value="Male">
+                    <span>Male</span>
+                </label>
+                <label>
+                    <input type="checkbox" class="radio-input" name="gender" value="Female">
+                    <span>Female</span>
+                </label>
+            </div>
+
+            <h2>birthdate </h2>
+            <div class="birthdate">
+
+                <input type="date" class="birth-date" id="date">
+            </div>
+
+
+            <h2>Hobbies</h2>
+            <div class="container-checkbox">
+
+                <label>
+                    <input type="checkbox" class="input-hobbies" name="hobbies" value="Reading"><span>Reading</span>
+                    <label>
+                        <input type="checkbox" class="input-hobbies" name="hobbies" value="Sports"><span>Sports</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" class="input-hobbies" name="hobbies" value="Music"><span>Music</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" class="input-hobbies" name="hobbies" value="Online Games"><span>Online
+                            Games</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" class="input-hobbies" name="hobbies" value="Travel"><span>Travel</span>
+                    </label>
+            </div>
+
+            <div class="comment">
+                <textarea placeholder="comments" id="comment"></textarea>
+            </div>
+            <div class="button">
+                <button onclick="savedata()">Done</button>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Updated savedata function to use database backend
+        async function savedata() {
+            // Get form values
+            let name = document.getElementById("name").value;
+            let age = document.getElementById("age").value;
+            let nationality = document.getElementById("nationality").value;
+            let date = document.getElementById("date").value;
+            let comment = document.getElementById("comment").value;
+
+            // Get gender (single selection)
+            let gender = "";
+            let genderCheckboxes = document.querySelectorAll('input[name="gender"]:checked');
+            if (genderCheckboxes.length > 0) {
+                gender = genderCheckboxes[0].value;
+            }
+
+            // Get hobbies (multiple selection)
+            let hobbies = [];
+            let hobbyCheckboxes = document.querySelectorAll('input[name="hobbies"]:checked');
+            hobbyCheckboxes.forEach(function(checkbox) {
+                hobbies.push(checkbox.value);
+            });
+
+            // Create data object
+            let formData = {
+                name: name,
+                age: age,
+                nationality: nationality,
+                gender: gender,
+                date: date,
+                hobbies: hobbies.join(", "),
+                comment: comment
+            };
+
+            try {
+                // Send to database backend
+                let response = await fetch('api.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                let result = await response.json();
+
+                if (result.success) {
+                    alert("Data saved to database successfully!");
+                    // Clear form
+                    document.getElementById("name").value = "";
+                    document.getElementById("age").value = "";
+                    document.getElementById("nationality").value = "";
+                    document.getElementById("date").value = "";
+                    document.getElementById("comment").value = "";
+                    
+                    // Uncheck all checkboxes
+                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                } else {
+                    alert("Error saving data: " + (result.error || "Unknown error"));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Failed to save data. Please check your connection.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>
